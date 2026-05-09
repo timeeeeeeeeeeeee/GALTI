@@ -68,7 +68,16 @@ canvas#radarChart{width:100%;max-width:500px}
     从100部经典Galgame的300位角色中<br>
     找到与你最匹配的那个TA
   </p>
-  <button class="start-btn" onclick="startQuiz()">开始测试</button>
+  <div id="consentBox" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:500px;margin:0 auto 20px;text-align:left">
+    <p style="color:var(--accent);font-size:.95em;margin-bottom:10px">📋 数据收集声明</p>
+    <p style="color:var(--dim);font-size:.85em;line-height:1.7">我们希望收集您的答题数据和匹配结果，用于优化匹配算法和角色数据。所有数据匿名，不包含任何个人信息。您可以随时在结果页导出或删除您的数据。</p>
+    <div style="display:flex;gap:10px;margin-top:15px;justify-content:center">
+      <button onclick="setConsent(true)" style="padding:10px 25px;border-radius:20px;border:1px solid var(--accent);background:rgba(124,92,191,0.15);color:var(--accent);cursor:pointer;font-size:.9em;transition:all .2s" onmouseover="this.style.background='var(--accent)';this.style.color='#fff'" onmouseout="this.style.background='rgba(124,92,191,0.15)';this.style.color='var(--accent)'">✓ 允许收集</button>
+      <button onclick="setConsent(false)" style="padding:10px 25px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;font-size:.9em;transition:all .2s">✗ 拒绝</button>
+    </div>
+    <p id="consentStatus" style="text-align:center;margin-top:10px;font-size:.8em;color:var(--dim)"></p>
+  </div>
+  <button class="start-btn" id="startBtn" onclick="startQuiz()" style="opacity:0.4;pointer-events:none">开始测试</button>
   <p style="color:var(--dim);font-size:.85em;margin-top:20px">数据来源：CNGal.org · VNDB.org · 预计用时 5-10 分钟</p>
 </div>
 
@@ -119,13 +128,25 @@ canvas#radarChart{width:100%;max-width:500px}
     </div>
   </div>
   
+  <div id="surveyCard" class="result-card" style="margin-top:20px">
+    <h3 style="color:var(--accent);margin-bottom:10px">📊 匹配准确度评价</h3>
+    <p style="color:var(--dim);font-size:.9em;margin-bottom:15px">你觉得「<span id="surveyCharName"></span>」这个匹配结果如何？</p>
+    <div id="surveyOptions" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+      <button class="survey-btn" onclick="submitSurvey(1)" style="padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:all .2s;font-size:.9em">🙅 完全不相干</button>
+      <button class="survey-btn" onclick="submitSurvey(2)" style="padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:all .2s;font-size:.9em">🤔 不太像</button>
+      <button class="survey-btn" onclick="submitSurvey(3)" style="padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:all .2s;font-size:.9em">😐 普通</button>
+      <button class="survey-btn" onclick="submitSurvey(4)" style="padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:all .2s;font-size:.9em">😊 很像</button>
+      <button class="survey-btn" onclick="submitSurvey(5)" style="padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:all .2s;font-size:.9em">🤯 简直一样</button>
+    </div>
+    <p id="surveyThanks" style="color:var(--accent);margin-top:12px;font-size:.9em;display:none">感谢您的反馈！❤️</p>
+  </div>
   <button class="restart-btn" onclick="restart()">重新测试</button>
 </div>
 
-<script src="galti_chars.js?v=20250510E"></script>
-<script src="galti_questions.js?v=20250510E"></script>
-<script src="galti_stories.js?v=20250510E"></script>
-<script src="galti_app.js?v=20250510E"></script>
+<script src="galti_chars.js?v=20250510F"></script>
+<script src="galti_questions.js?v=20250510F"></script>
+<script src="galti_stories.js?v=20250510F"></script>
+<script src="galti_app.js?v=20250510F"></script>
 </body>
 </html>
 </task_progress>

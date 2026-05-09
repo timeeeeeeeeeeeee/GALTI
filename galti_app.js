@@ -3,10 +3,71 @@ let currentQ = 0;
 let scores = new Array(20).fill(0);
 let selectedOpt = -1;
 let answers = []; // Store answers for each question: {optIdx, scoreChanges}
+let consentGiven = false;
+let sessionId = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+}
+
+function setConsent(val) {
+  consentGiven = val;
+  const btn = document.getElementById('startBtn');
+  const status = document.getElementById('consentStatus');
+  if (val) {
+    status.textContent = '✓ 已同意数据收集，感谢支持！';
+    status.style.color = 'var(--accent)';
+  } else {
+    status.textContent = '已拒绝数据收集，测试正常进行';
+    status.style.color = 'var(--dim)';
+  }
+  btn.style.opacity = '1';
+  btn.style.pointerEvents = 'auto';
+}
+
+function collectAndSend(extraData) {
+  if (!consentGiven) return;
+  const payload = {
+    sid: sessionId,
+    ts: new Date().toISOString(),
+    answers: answers.map((a, i) => ({q: i, o: a.optIdx})),
+    scores: scores.slice(),
+    ...extraData
+  };
+  // Try to send to a free endpoint (jsonbin.io, Google Forms, etc.)
+  // For now, store locally and offer download
+  const stored = JSON.parse(localStorage.getItem('galti_data') || '[]');
+  stored.push(payload);
+  localStorage.setItem('galti_data', JSON.stringify(stored));
+  // Also try sending to a webhook if available
+  try {
+    fetch('https://formspree.io/f/placeholder', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+      mode: 'no-cors'
+    }).catch(() => {});
+  } catch(e) {}
+}
+
+function submitSurvey(rating) {
+  const surveyData = {
+    bestMatch: window._results ? window._results.matches[0].name : '',
+    similarity: window._results ? window._results.matches[0].similarity : 0,
+    rating: rating
+  };
+  // Highlight selected button
+  document.querySelectorAll('.survey-btn').forEach(b => {
+    b.style.borderColor = 'var(--border)';
+    b.style.background = 'var(--bg)';
+  });
+  event.target.style.borderColor = 'var(--accent)';
+  event.target.style.background = 'rgba(124,92,191,0.2)';
+  document.getElementById('surveyThanks').style.display = 'block';
+  document.getElementById('surveyOptions').style.pointerEvents = 'none';
+  // Collect data with survey
+  collectAndSend(surveyData);
 }
 
 function startQuiz() {
@@ -206,6 +267,10 @@ function renderResults(norm, matches) {
     </div>` : ''}
     <p style="color:var(--dim);margin-top:15px;font-size:.9em">你的性格与这位角色最为相似！</p>
   `;
+
+  // Set survey char name
+  const surveyCharEl = document.getElementById('surveyCharName');
+  if (surveyCharEl) surveyCharEl.textContent = best.name;
 
   // Radar chart
   drawRadar(norm);
