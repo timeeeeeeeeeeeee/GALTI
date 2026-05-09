@@ -18,10 +18,16 @@ function startQuiz() {
   renderQuestion();
 }
 
+const VOLUME_NAMES = ['第一卷：叙事与审美','第二卷：道德与人性','第三卷：孤独与连接','第四卷：深渊与光明','第五卷：命运与选择'];
+
 function renderQuestion() {
   const q = QUESTIONS[currentQ];
+  const volIdx = Math.floor(currentQ / 10);
   document.getElementById('progressFill').style.width = ((currentQ) / QUESTIONS.length * 100) + '%';
-  document.getElementById('progressText').textContent = `问题 ${currentQ + 1}/${QUESTIONS.length}`;
+  document.getElementById('progressText').textContent = `${VOLUME_NAMES[volIdx]} · 问题 ${currentQ + 1}/${QUESTIONS.length}`;
+  // Show category tag
+  const catEl = document.getElementById('questionCat');
+  if (catEl) catEl.textContent = q.cat || '';
   document.getElementById('questionText').textContent = q.q;
   const container = document.getElementById('optionsContainer');
   container.innerHTML = '';
