@@ -29,7 +29,7 @@ function setConsent(val) {
 // ====== DATA COLLECTION ======
 // 👇 在这里粘贴你的 webhook.site URL，然后 push 到 GitHub
 // 获取方法：打开 https://webhook.site ，复制页面上显示的 URL
-var DATA_ENDPOINT = ''; // 例如 'https://webhook.site/xxxx-xxxx'
+var DATA_ENDPOINT = 'https://webhook.site/ad9e8514-f6f4-4321-98fd-e2da87929f31';
 
 function collectAndSend(extraData) {
   if (!consentGiven) return;
