@@ -26,14 +26,9 @@ function setConsent(val) {
   btn.style.pointerEvents = 'auto';
 }
 
-// ====== DATA COLLECTION CONFIG ======
-// To enable Google Sheets collection:
-// 1. Create a Google Sheet
-// 2. Go to Extensions > Apps Script
-// 3. Paste the code from google_sheets_backend.js
-// 4. Deploy as Web App (Execute as: Me, Access: Anyone)
-// 5. Paste the URL below
-const DATA_ENDPOINT = ''; // e.g. 'https://script.google.com/macros/s/xxxx/exec'
+// ====== DATA COLLECTION ======
+// 使用 jsonbin.io 免费收集数据
+// 设置方法见下方
 
 function collectAndSend(extraData) {
   if (!consentGiven) return;
@@ -48,16 +43,6 @@ function collectAndSend(extraData) {
   const stored = JSON.parse(localStorage.getItem('galti_data') || '[]');
   stored.push(payload);
   localStorage.setItem('galti_data', JSON.stringify(stored));
-  // Send to remote endpoint if configured
-  if (DATA_ENDPOINT) {
-    try {
-      fetch(DATA_ENDPOINT, {
-        method: 'POST',
-        headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify(payload)
-      }).catch(() => {});
-    } catch(e) {}
-  }
 }
 
 function exportData() {

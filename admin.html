@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GalTI 管理面板</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0a1a;color:#e8e8f0;min-height:100vh;padding:20px}
+.C{max-width:1200px;margin:0 auto}
+h1{font-size:1.8em;background:linear-gradient(135deg,#7c5cbf,#e85898);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}
+.box{background:#151530;border:1px solid #2a2a50;border-radius:16px;padding:30px;margin:20px 0}
+input,button{padding:12px 20px;border-radius:10px;border:1px solid #2a2a50;font-size:1em;font-family:inherit}
+input{background:#0a0a1a;color:#e8e8f0;width:400px;margin-right:10px}
+.btn{background:linear-gradient(135deg,#7c5cbf,#e85898);color:#fff;border:none;cursor:pointer;padding:12px 30px;transition:transform .2s}
+.btn:hover{transform:scale(1.05)}
+table{width:100%;border-collapse:collapse;margin-top:15px;font-size:.85em}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #2a2a50}
+th{color:#7c5cbf;font-weight:600;background:rgba(124,92,191,.1)}
+td{color:#8888aa;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:hover td{color:#e8e8f0;background:rgba(124,92,191,.05)}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;margin:15px 0}
+.stat{background:#0a0a1a;border:1px solid #2a2a50;border-radius:12px;padding:15px;text-align:center}
+.stat-num{font-size:2em;color:#7c5cbf;font-weight:bold}
+.stat-label{color:#8888aa;font-size:.85em;margin-top:5px}
+.xbtn{background:#151530;border:1px solid #2a2a50;color:#8888aa;margin:5px;padding:8px 15px;font-size:.85em}
+.xbtn:hover{border-color:#7c5cbf;color:#7c5cbf}
+.note{background:#0a0a1a;border-left:3px solid #e85898;padding:15px;margin:15px 0;border-radius:0 10px 10px 0;font-size:.9em;line-height:1.8;color:#8888aa}
+.tabs{display:flex;gap:5px;margin:15px 0}
+.at{padding:8px 20px;border-radius:20px;border:1px solid #2a2a50;background:transparent;color:#8888aa;cursor:pointer;transition:all .2s}
+.at.on{background:#7c5cbf;color:#fff;border-color:#7c5cbf}
+.sec{display:none}.sec.on{display:block}
+ol li{margin:5px 0}
+a{color:#7c5cbf}
+code{background:#0a0a1a;padding:2px 8px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="C">
+  <h1>🎮 GalTI 管理面板</h1>
+
+  <!-- 登录 -->
+  <div id="loginBox" class="box">
+    <h2 style="color:#7c5cbf;margin-bottom:15px">🔐 管理员登录</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <input type="password" id="pwd" placeholder="输入管理员密码" onkeydown="if(event.key==='Enter')login()">
+      <button class="btn" onclick="login()">登录</button>
+    </div>
+    <p id="err" style="color:#e85898;margin-top:10px;font-size:.9em;display:none"></p>
+  </div>
+
+  <!-- 主面板 -->
+  <div id="panel" style="display:none">
+    <div class="tabs">
+      <button class="at on" onclick="stab('local',this)">📁 本地数据</button>
+      <button class="at" onclick="stab('cloud',this)">☁️ 云端数据</button>
+      <button class="at" onclick="stab('guide',this)">📖 设置指南</button>
+    </div>
+
+    <!-- 本地 -->
+    <div id="local" class="sec on box">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <h2 style="color:#7c5cbf">本地数据（你的浏览器）</h2>
+        <div>
+          <button class="xbtn" onclick="exp('local','csv')">📥 CSV</button>
+          <button class="xbtn" onclick="exp('local','json')">📥 JSON</button>
+          <button class="xbtn" onclick="loadLocal()" style="border-color:#7c5cbf;color:#7c5cbf">🔄 刷新</button>
+        </div>
+      </div>
+      <div class="stats" id="ls"></div>
+      <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>时间</th><th>匹配角色</th><th>匹配度</th><th>评价</th><th>20维分数</th><th>答案</th></tr></thead><tbody id="lb"></tbody></table></div>
+      <p id="le" style="text-align:center;color:#8888aa;padding:30px">暂无数据</p>
+    </div>
+
+    <!-- 云端 -->
+    <div id="cloud" class="sec box">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <h2 style="color:#7c5cbf">云端数据（所有用户）</h2>
+        <div>
+          <button class="xbtn" onclick="exp('cloud','csv')">📥 CSV</button>
+          <button class="xbtn" onclick="exp('cloud','json')">📥 JSON</button>
+          <button class="xbtn" onclick="loadCloud()" style="border-color:#7c5cbf;color:#7c5cbf">🔄 刷新</button>
+        </div>
+      </div>
+      <div class="stats" id="cs"></div>
+      <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>时间</th><th>匹配角色</th><th>匹配度</th><th>评价</th><th>20维分数</th><th>答案</th></tr></thead><tbody id="cb"></tbody></table></div>
+      <p id="ce" style="text-align:center;color:#8888aa;padding:30px">请先在「设置指南」配置云端</p>
+    </div>
+
+    <!-- 指南 -->
+    <div id="guide" class="sec box">
+      <h2 style="color:#7c5cbf;margin-bottom:15px">📖 如何让所有用户的数据发送到你这里</h2>
+      <div class="note">
+        <p style="color:#e85898;margin-bottom:8px">⚠️ 问题：为什么看不到别人的数据？</p>
+        <p>目前数据存在每个用户自己的浏览器里，你只能看到自己的。<br>要用 Google Sheets 收集<strong style="color:#e8e8f0">所有人</strong>的数据，按下面步骤操作：</p>
+      </div>
+
+      <h3 style="color:#7c5cbf;margin:25px 0 12px">第一步：创建 Google Sheet</h3>
+      <ol style="color:#8888aa;line-height:2.2;padding-left:20px">
+        <li>打开 <a href="https://sheets.google.com" target="_blank">sheets.google.com</a>，创建新表格</li>
+        <li>第一行输入7个表头（每格一个）：<br><code>时间戳</code> <code>会话ID</code> <code>匹配角色</code> <code>匹配度</code> <code>评价</code> <code>20维分数</code> <code>50题答案</code></li>
+      </ol>
+
+      <h3 style="color:#7c5cbf;margin:25px 0 12px">第二步：添加 Apps Script</h3>
+      <ol style="color:#8888aa;line-height:2.2;padding-left:20px">
+        <li>在 Google Sheet 中点击菜单 <strong style="color:#e8e8f0">扩展 → Apps Script</strong></li>
+        <li>删除代码编辑器里的所有内容</li>
+        <li>打开你项目中的 <code>google_sheets_backend.js</code> 文件</li>
+        <li>复制注释 <code>/* ... */</code> 里面的代码（不包括 <code>/*</code> 和 <code>*/</code>）</li>
+        <li>粘贴到 Apps Script 编辑器中</li>
+        <li>把第一行的 <code>your_password_here</code> 改成你的密码（记住它！）</li>
+        <li>点击 💾 保存</li>
+      </ol>
+
+      <h3 style="color:#7c5cbf;margin:25px 0 12px">第三步：部署为 Web App</h3>
+      <ol style="color:#8888aa;line-height:2.2;padding-left:20px">
+        <li>点击右上角 <strong style="color:#e8e8f0">部署 → 新建部署</strong></li>
+        <li>点击「类型」旁边的齿轮，选择 <strong style="color:#e8e8f0">Web 应用</strong></li>
+        <li>执行身份选 <strong style="color:#e8e8f0">我</strong></li>
+        <li>谁可以访问选 <strong style="color:#e8e8f0">任何人</strong></li>
+        <li>点击 <strong style="color:#e8e8f0">部署</strong>，授权弹窗全部允许</li>
+        <li>复制生成的 URL（类似 <code>https://script.google.com/macros/s/xxxx/exec</code>）</li>
+      </ol>
+
+      <h3 style="color:#7c5cbf;margin:25px 0 12px">第四步：配置 URL</h3>
+      <div style="margin:15px 0">
+        <p style="color:#8888aa;margin-bottom:8px">把 URL 粘贴到下面，点击保存：</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <input type="text" id="epUrl" placeholder="https://script.google.com/macros/s/xxxx/exec">
+          <button class="btn" onclick="saveEp()">保存</button>
+        </div>
+        <p id="epMsg" style="font-size:.9em;margin-top:8px;color:#8888aa"></p>
+      </div>
+
+      <div class="note" style="border-left-color:#7c5cbf;margin-top:20px">
+        <p style="color:#7c5cbf;margin-bottom:5px">✅ 完成后效果</p>
+        <p>• 用户完成测试 → 数据自动写入你的 Google Sheet<br>
+        • 你可以随时打开 Google Sheet 查看数据<br>
+        • 你也可以在本页面「云端数据」标签查看<br>
+        • 别人完全看不到任何数据<br>
+        • Google Sheet 可以直接导出 Excel/CSV 分析</p>
+      </div>
+
+      <div class="note" style="border-left-color:#e85898">
+        <p style="color:#e85898;margin-bottom:5px">🔒 安全保障</p>
+        <p>• Google Sheet 只有你的 Google 账号能打开<br>
+        • 用户只能写入（POST），不能读取（GET）<br>
+        • 读取数据需要你设置的密码<br>
+        • 即使别人知道 URL 也无法查看数据</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var PWD='galti2025admin'; // 改成你的密码
+var cloudData=[];
+
+function login(){
+  if(document.getElementById('pwd').value===PWD){
+    document.getElementById('loginBox').style.display='none';
+    document.getElementById('panel').style.display='block';
+    document.getElementById('epUrl').value=localStorage.getItem('galti_ep')||'';
+    loadLocal();
+  }else{
+    var e=document.getElementById('err');e.textContent='密码错误！';e.style.display='block';
+  }
+}
+
+function stab(s,btn){
+  document.querySelectorAll('.at').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  document.querySelectorAll('.sec').forEach(function(el){el.classList.remove('on')});
+  document.getElementById(s).classList.add('on');
+  if(s==='cloud')loadCloud();
+}
+
+function loadLocal(){
+  var d=JSON.parse(localStorage.getItem('galti_data')||'[]');
+  render(d,'l');
+}
+
+function loadCloud(){
+  var ep=localStorage.getItem('galti_ep')||'';
+  if(!ep){document.getElementById('ce').textContent='请先在「设置指南」配置云端';return;}
+  document.getElementById('ce').textContent='加载中...';
+  document.getElementById('cb').innerHTML='';
+  fetch(ep+'?action=read&pwd='+PWD).then(function(r){return r.json()}).then(function(d){
+    if(d.status==='denied'){document.getElementById('ce').textContent='密码错误';return;}
+    cloudData=d;document.getElementById('ce').style.display='none';render(d,'c');
+  }).catch(function(e){document.getElementById('ce').textContent='连接失败: '+e.message;});
+}
+
+function render(d,prefix){
+  var total=d.length;
+  var rated=d.filter(function(x){return x.rating}).length;
+  var avgM=total?Math.round(d.reduce(function(s,x){return s+(x.similarity||0)},0)/total):0;
+  var avgR=rated?(d.reduce(function(s,x){return s+(x.rating||0)},0)/rated).toFixed(1):'-';
+  var today=d.filter(function(x){return(x.ts||'').startsWith(new Date().toISOString().slice(0,10))}).length;
+  document.getElementById(prefix+'s').innerHTML=
+    '<div class="stat"><div class="stat-num">'+total+'</div><div class="stat-label">总数</div></div>'+
+    '<div class="stat"><div class="stat-num">'+today+'</div><div class="stat-label">今日</div></div>'+
+    '<div class="stat"><div class="stat-num">'+avgM+'%</div><div class="stat-label">平均匹配</div></div>'+
+    '<div class="stat"><div class="stat-num">'+avgR+'</div><div class="stat-label">平均评价</div></div>';
+  var tbody=document.getElementById(prefix+'b');
+  var empty=document.getElementById(prefix+'e');
+  if(!total){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  var rl=['','🙅','🤔','😐','😊','🤯'];
+  tbody.innerHTML=d.map(function(x,i){
+    return '<tr><td>'+(i+1)+'</td><td>'+(x.ts||'').replace('T',' ').slice(0,19)+'</td>'+
+    '<td style="color:#e8e8f0">'+(x.bestMatch||'-')+'</td>'+
+    '<td>'+(x.similarity?x.similarity+'%':'-')+'</td>'+
+    '<td>'+(x.rating?rl[x.rating]||x.rating:'-')+'</td>'+
+    '<td>'+(x.scores?x.scores.join(','):'-')+'</td>'+
+    '<td>'+(x.answers?x.answers.map(function(a){return a.o}).join(','):'-')+'</td></tr>';
+  }).join('');
+}
+
+function saveEp(){
+  var url=document.getElementById('epUrl').value.trim();
+  localStorage.setItem('galti_ep',url);
+  document.getElementById('epMsg').textContent='✓ 已保存！现在需要更新 galti_app.js：把 DATA_ENDPOINT 改成这个 URL，然后 push 到 GitHub。';
+  document.getElementById('epMsg').style.color='#7c5cbf';
+}
+
+function exp(src,fmt){
+  var d=src==='cloud'?cloudData:JSON.parse(localStorage.getItem('galti_data')||'[]');
+  if(!d.length){alert('暂无数据');return;}
+  if(fmt==='json'){
+    dl(JSON.stringify(d,null,2),'galti_data.json','application/json');
+  }else{
+    var h=['时间','会话ID','匹配角色','匹配度','评价','20维分数','答案'];
+    var rows=d.map(function(r){
+      return [r.ts||'',r.sid||'',r.bestMatch||'',r.similarity||'',r.rating||'',
+        r.scores?r.scores.join(';'):'',r.answers?r.answers.map(function(a){return a.o}).join(','):''];
+    });
+    var csv='\uFEFF'+[h].concat(rows).map(function(r){return r.map(function(c){return '"'+c+'"'}).join(',')}).join('\n');
+    dl(csv,'galti_data.csv','text/csv');
+  }
+}
+
+function dl(c,n,t){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([c],{type:t}));
+  a.download=n;a.click();
+}
+</script>
+</body>
+</html>
