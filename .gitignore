@@ -1,0 +1,15 @@
+# Data collection scripts (not needed for website)
+*.ps1
+analyze_*.ps1
+explore_*.ps1
+deep_*.ps1
+fetch_*.ps1
+extract_*.ps1
+
+# Raw HTML data files
+entry_*.html
+cngal_characters.html
+
+# OS files
+Thumbs.db
+.DS_Store

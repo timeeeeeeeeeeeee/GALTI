@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GalTI - Galgame角色人格测试</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a1a;--card:#151530;--accent:#7c5cbf;--accent2:#e85898;--text:#e8e8f0;--dim:#8888aa;--border:#2a2a50}
+body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.page{display:none;min-height:100vh;padding:20px;max-width:900px;margin:0 auto}
+.page.active{display:flex;flex-direction:column;align-items:center}
+h1{font-size:2.5em;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;text-align:center}
+h2{font-size:1.6em;color:var(--accent);margin:20px 0 10px;text-align:center}
+.subtitle{color:var(--dim);font-size:1.1em;margin-bottom:30px;text-align:center}
+.start-btn,.next-btn,.restart-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:16px 48px;font-size:1.2em;border-radius:50px;cursor:pointer;transition:transform .2s,box-shadow .2s;margin:20px 0}
+.start-btn:hover,.next-btn:hover,.restart-btn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(124,92,191,.4)}
+.progress-bar{width:100%;height:8px;background:var(--border);border-radius:4px;margin:15px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s;border-radius:4px}
+.question-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:30px;width:100%;margin:15px 0}
+.question-text{font-size:1.2em;margin-bottom:20px;line-height:1.6}
+.options{display:flex;flex-direction:column;gap:10px}
+.option-btn{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:14px 20px;border-radius:10px;cursor:pointer;text-align:left;transition:all .2s;font-size:1em;line-height:1.5}
+.option-btn:hover{border-color:var(--accent);background:rgba(124,92,191,.1)}
+.option-btn.selected{border-color:var(--accent);background:rgba(124,92,191,.2);box-shadow:0 0 15px rgba(124,92,191,.2)}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:30px;width:100%;margin:15px 0;text-align:center}
+.char-avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:3em;margin:0 auto 15px;border:3px solid var(--accent)}
+.char-name{font-size:1.8em;font-weight:bold;margin:5px 0}
+.char-game{color:var(--accent);font-size:1.1em;margin:5px 0}
+.char-desc{color:var(--dim);margin:10px 0;line-height:1.6}
+.match-bar{display:flex;align-items:center;margin:8px 0;gap:10px}
+.match-label{width:80px;text-align:right;font-size:.9em;color:var(--dim)}
+.match-track{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+.match-fill{height:100%;border-radius:5px;transition:width 1s}
+.radar-container{width:100%;max-width:500px;margin:20px auto}
+canvas#radarChart{width:100%;max-width:500px}
+.dim-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin:15px 0}
+.dim-item{display:flex;align-items:center;gap:8px;font-size:.85em}
+.dim-name{width:70px;text-align:right;color:var(--dim)}
+.dim-bar-bg{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.dim-bar{height:100%;border-radius:4px;transition:width 1s}
+.dim-val{width:30px;color:var(--dim);font-size:.8em}
+.top-chars{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:15px;width:100%;margin:15px 0}
+.top-char-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:15px;text-align:center;cursor:pointer;transition:all .2s}
+.top-char-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.top-char-card .mini-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.3em;margin:0 auto 8px}
+.top-char-card .match-pct{font-size:1.2em;font-weight:bold;color:var(--accent)}
+.top-char-card .tc-name{font-size:.95em;margin:4px 0 2px}
+.top-char-card .tc-game{font-size:.75em;color:var(--dim)}
+.logo{font-size:4em;margin:30px 0 10px}
+.tabs{display:flex;gap:5px;margin:15px 0}
+.tab{padding:8px 20px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;transition:all .2s}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.summary-text{line-height:1.8;color:var(--text);margin:10px 0}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .5s ease-out}
+@media(max-width:600px){h1{font-size:1.8em}.question-card{padding:20px}.dim-list{grid-template-columns:1fr}.top-chars{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div id="startPage" class="page active">
+  <div class="logo">🎮</div>
+  <h1>GalTI</h1>
+  <p class="subtitle">Galgame角色人格匹配测试</p>
+  <p style="color:var(--dim);max-width:500px;text-align:center;line-height:1.8;margin:10px 0 30px">
+    通过50道精心设计的性格测试题，从20个维度深入分析你的人格特征，<br>
+    从100部经典Galgame的300位角色中<br>
+    找到与你最匹配的那个TA
+  </p>
+  <button class="start-btn" onclick="startQuiz()">开始测试</button>
+  <p style="color:var(--dim);font-size:.85em;margin-top:20px">数据来源：CNGal.org · VNDB.org · 预计用时 5-10 分钟</p>
+</div>
+
+<div id="quizPage" class="page">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <p id="progressText" style="color:var(--dim);font-size:.9em">问题 1/50</p>
+  <div class="question-card fade-in" id="questionCard">
+    <div class="question-text" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+  </div>
+  <button class="next-btn" id="backBtn" onclick="prevQuestion()" style="display:none">← 上一题</button>
+</div>
+
+<div id="loadingPage" class="page">
+  <div class="logo">⏳</div>
+  <h2>分析中...</h2>
+  <p style="color:var(--dim);margin:15px 0">正在计算你的20维人格数据并匹配300位角色</p>
+</div>
+
+<div id="resultPage" class="page">
+  <h2 style="margin-top:20px">你的人格分析结果</h2>
+  
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('match')">最佳匹配</button>
+    <button class="tab" onclick="showTab('radar')">维度图表</button>
+    <button class="tab" onclick="showTab('summary')">人格总结</button>
+    <button class="tab" onclick="showTab('top')">TOP10匹配</button>
+  </div>
+
+  <div id="matchTab">
+    <div class="result-card fade-in" id="bestMatch"></div>
+  </div>
+  <div id="radarTab" style="display:none">
+    <div class="result-card">
+      <h3>二十维人格雷达图</h3>
+      <div class="radar-container"><canvas id="radarChart" width="500" height="500"></canvas></div>
+      <div class="dim-list" id="dimList"></div>
+    </div>
+  </div>
+  <div id="summaryTab" style="display:none">
+    <div class="result-card" id="summaryCard"></div>
+  </div>
+  <div id="topTab" style="display:none">
+    <div class="result-card">
+      <h3>TOP 10 最匹配角色</h3>
+      <div class="top-chars" id="topChars"></div>
+    </div>
+  </div>
+  
+  <button class="restart-btn" onclick="restart()">重新测试</button>
+</div>
+
+<script src="galti_chars.js?v=20250509D"></script>
+<script src="galti_questions.js?v=20250509D"></script>
+<script src="galti_stories.js?v=20250509D"></script>
+<script src="galti_app.js?v=20250509D"></script>
+</body>
+</html>
+</task_progress>
+- [x] Create main HTML structure with CSS
+- [ ] Create character database (300 characters from 100 VNs)
+- [ ] Create 50 questions with dimension scoring
+- [ ] Create app logic (quiz, radar chart, matching algorithm)
+- [ ] Test and verify
+</task_progress>
+</write_to_file>

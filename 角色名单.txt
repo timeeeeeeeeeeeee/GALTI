@@ -1,0 +1,441 @@
+GalTI 完整角色名单（共384个角色，从代码自动提取）
+请为角色提供图片，命名格式：角色名.png 或 角色名.jpg，放到 galti/images/ 文件夹
+
+=== Type-Moon ===
+1. Saber (Artoria Pendragon) - Fate/stay night
+2. 远坂凛 (Tohsaka Rin) - Fate/stay night
+3. 间桐樱 (Matou Sakura) - Fate/stay night
+4. アルクェイド (Arcueid) - Tsukihime
+5. シエル (Ciel) - Tsukihime
+6. 秋葉 (Akiha Tohno) - Tsukihime
+7. 蒼崎青子 (Aozaki Aoko) - Mahoutsukai no Yoru
+8. カレン (Caren) - Fate/hollow ataraxia
+9. 赤セイバー (Nero Claudius) - Fate/Extra
+10. マシュ (Mash Kyrielight) - Fate/Grand Order
+11. ジャンヌ (Jeanne d'Arc) - Fate/Grand Order
+12. ノエル (Noel) - Tsukihime Remake
+13. 衛宮士郎 - Fate/stay night
+14. 遠野志貴 - Tsukihime
+15. 藤丸立香 - Fate/Grand Order
+
+=== KEY社 ===
+16. 古河渚 (Furukawa Nagisa) - Clannad
+17. 坂上智代 (Sakagami Tomoyo) - Clannad
+18. 藤林杏 (Fujibayashi Kyou) - Clannad
+19. 月宮あゆ (Tsukimiya Ayu) - Kanon
+20. 水瀬名雪 (Minase Nayuki) - Kanon
+21. 川澄舞 (Kawasumi Mai) - Kanon
+22. 神尾観鈴 (Kamio Misuzu) - AIR
+23. 霧島佳乃 (Kirishima Kano) - AIR
+24. 棗鈴 (Natsume Rin) - Little Busters!
+25. 能美クド (Noumi Kudryavka) - Little Busters!
+26. 千里朱音 (Senri Akane) - Rewrite
+27. 此花ルチア (Konohana Lucia) - Rewrite
+28. 星野夢美 (Hoshino Yumemi) - Planetarian
+29. 坂上智代 (Tomoyo After) - Tomoyo After
+30. 鷹野つぐみ (Takano Tsugumi) - Summer Pockets
+31. 空門蒼 (Sorato Ao) - Summer Pockets
+32. ユイ (Yui) - Angel Beats!
+33. クド (Kud after) - Kud Wafter
+34. シオン (Shiona) - Harmonia
+35. 長森瑞佳 (Nagamori Mizuka) - ONE
+36. 小倉結衣 (Ogura Yui) - Moon.
+37. 神鷹 (Kamitaka) - Summer Pockets REFLECTION BLUE
+38. 岡崎朋也 - Clannad
+39. 天王寺瑚太朗 - Rewrite
+40. 直枝理樹 - Little Busters!
+41. 相沢祐一 - Kanon
+42. 国崎往人 - AIR
+43. 鳴瀬しろは - Summer Pockets
+44. 空門蒼 - Summer Pockets
+
+=== 5pb / Science Adventure ===
+45. 牧瀬紅莉栖 (Makise Kurisu) - Steins;Gate
+46. 椎名まゆり (Shiina Mayuri) - Steins;Gate
+47. 阿万音鈴羽 (Amane Suzuha) - Steins;Gate
+48. 西條拓巳 (Nishijou Takumi) - Chaos;Head
+49. 瀬乃宮みさき (Senomiya Misaki) - Robotics;Notes
+50. 宮代拓留 (Miyashiro Takuru) - Chaos;Child
+51. 比屋定真帆 (Hiyajo Maho) - Steins;Gate 0
+52. 桃井 (Momomi) - Anonymous;Code
+53. 岡部倫太郎 - Steins;Gate
+54. 八神はしもと - Robotics;Notes
+55. 高岡ポロン - Anonymous;Code
+
+=== 07th Expansion ===
+56. 竜宮レナ (Ryuuguu Rena) - Higurashi no Naku Koro ni
+57. 園崎魅音 (Sonozaki Mion) - Higurashi no Naku Koro ni
+58. 古手梨花 (Furude Rika) - Higurashi no Naku Koro ni
+59. ベアトリーチェ (Beatrice) - Umineko no Naku Koro ni
+60. 右代宮朱志香 (Jessica Ushiromiya) - Umineko no Naku Koro ni
+61. 彼岸花 (Higanbana) - Higanbana no Saku Yoru ni
+62. ローズ (Rose) - Rose Guns Days
+63. 東郷 (Tougo) - Ciconia When They Cry
+64. 前原圭一 - 寒蝉鸣泣之时
+
+=== WHITE ALBUM ===
+65. 小木曽雪菜 (Ogiso Setsuna) - White Album 2
+66. 冬馬かずさ (Touma Kazusa) - White Album 2
+67. 緒方理奈 (Ogata Rina) - White Album
+68. 小木曽雪菜 - 白色相簿2
+69. 冬馬かずさ - 白色相簿2
+70. 北原春希 - 白色相簿2
+
+=== 柚子社 (YUZUSOFT) ===
+71. 長束（ポチ） - 千恋＊万花
+72. 常陸茉子 - 千恋＊万花
+73. ムラサメ - 千恋＊万花
+74. 白羽矢夜美 - 千恋＊万花
+75. 朝武芳乃 - 千恋＊万花
+76. 馬飼直 - 千恋＊万花
+77. 朝武芳乃 (Asatake Yoshino) - Senren*Banka
+78. 在原七海 - RIDDLE JOKER
+79. 在原みゆき - RIDDLE JOKER
+80. 二條院羽月 - RIDDLE JOKER
+81. 式部茉優 - RIDDLE JOKER
+82. 綾小路俊 - RIDDLE JOKER
+83. 在原七海 (Arihara Nanami) - Riddle Joker
+84. 因幡めぐる - 魔女的夜宴
+85. 戸隠ちよめ - 魔女的夜宴
+86. 綾地寧々 - 魔女的夜宴
+87. 保科柊史 - 魔女的夜宴
+88. 鍵山雛 (Kagiyama Hina) - Sabbat of the Witch
+89. エリナ・ペトロヴナ・アヴェーン - DRACU-RIOT!
+90. 稲叢莉音 - DRACU-RIOT!
+91. ブリジット・デュ・ラック - DRACU-RIOT!
+92. 美甘ナツキ - DRACU-RIOT!
+93. 六连祐斗 - DRACU-RIOT!
+94. エリナ (Erina) - Dracu-Riot!
+95. 雲雀くるみ - 天色＊アイルノーツ
+96. 白鷺結菜 - 天色＊アイルノーツ
+97. 浅井春哉 - 天色＊アイルノーツ
+98. 夏目咲 - Cafe Stella
+99. 死神さん - Cafe Stella
+100. 猫猫 - Cafe Stella
+101. 夏目咲 (Natsume Saki) - Cafe Stella to Shinigami no Chou
+
+=== Grisaia系列 ===
+102. 榊由美子 (Sakaki Yumiko) - Grisaia no Kajitsu
+103. 莇菜 (Suou Amane) - Grisaia no Kajitsu
+104. 松嶋みちる (Matsushima Michiru) - Grisaia no Kajitsu
+105. エデル (Edel) - Grisaia no Meikyuu
+106. 入巣莳菜 - Grisaia no Kajitsu
+107. 風見雄二 - Grisaia no Kajitsu
+108. 天音 - Grisaia no Rakuen
+
+=== Sprite ===
+109. 雛見亜美 (Hinami Ami) - Ao no Kanata no Four Rhythm
+110. 日向晶也 - 苍之彼方的四重奏
+111. 鸢泽美咲 - 苍之彼方的四重奏
+112. 有坂真白 - 苍之彼方的四重奏
+113. 市ノ瀬莉佳 - 苍之彼方的四重奏 EX
+114. 倉科明日香 - 苍之彼方的四重奏 EXTRA2
+115. 住吉千里 - 恋爱与选举与巧克力
+116. 東雲皐月 - 恋爱与选举与巧克力
+117. 高橋絵理 - 恋爱与选举与巧克力
+118. 大島裕樹 - 恋爱与选举与巧克力
+119. 住吉千里 (Sumiyoshi Chisato) - Koi to Senkyo to Chocolate
+120. 東雲皐月 (Shinonome Satsuki) - Koi to Senkyo to Chocolate
+
+=== Navel（近月系列）===
+121. 大蔵遊星 - 近月少女的礼仪
+122. 桜小路ルナ - 近月少女的礼仪
+123. 花之宮亜子 - 近月少女的礼仪
+124. 尤希アンネ・ミッテルフィルト - 近月少女的礼仪
+125. ベルナルド・リヨン - 近月少女的礼仪
+126. 大蔵想遠 - 近月少女的礼仪2
+127. 桜小路アンナ - 近月少女的礼仪2
+
+=== Muv-Luv ===
+128. 鑑純夏 (Kagami Sumika) - Muv-Luv Alternative
+129. 御剣冥夜 (Mitsurugi Meiya) - Muv-Luv Alternative
+130. 白銀武 - Muv-Luv Alternative
+
+=== Ever17 / KID ===
+131. 小町つぐみ (Komachi Tsugumi) - Ever17
+132. 松永沙羅 (Matsunaga Sara) - Ever17
+133. 冬川こころ (Fuyukawa Kokoro) - Remember 11
+134. 倉成仙奈 (Kuranari Senna) - Never7
+135. 仓成武 - Ever17
+136. 優希堂悟 - Remember 11
+137. 優希堂真 - Never7
+
+=== School Days ===
+138. 桂言葉 (Katsura Kotonoha) - School Days
+139. 西園寺世界 (Saionji Sekai) - School Days
+140. 伊藤誠 - School Days
+
+=== Dies irae ===
+141. マリー (Marie) - Dies irae
+142. 麗 (Rea) - Dies irae
+143. ルサルカ - Dies irae
+144. 蓮 - Dies irae
+
+=== 其他经典VN ===
+145. osaurs 巡音 (Ohara Rinne) - Island
+146. サヤ (Saya) - Saya no Uta
+147. 有馬亜由美 (Arima Ayumi) - YU-NO
+148. 雨音 (Rain) - Baldr Sky
+149. 三嶋樹子 (Touko) - Sharin no Kuni
+150. 霧乃 (Kiri) - Cross†Channel
+151. セツミ (Setsumi) - Narcissu
+152. 森島はるか (Morishima Haruka) - Amagami
+153. 絢辻詞 (Ayatsuji Tsukasa) - Amagami
+154. 向日葵 (Himawari) - Himawari no Shoujo
+155. 夢見 (Yumemi) - Forest
+156. トウコ (Touko) - Swan Song
+157. リン (Rin) - Togainu no Chi
+158. 城沼哲雄 (Shironuma Tetsuo) - sweet pool
+159. 蒼葉 (Aoba) - DRAMAtical Murder
+160. 夜久月子 (Yakou Tsukiko) - Starry☆Sky
+161. 小森ユイ (Komori Yui) - Diabolik Lovers
+162. 七海春歌 (Nanami Haruka) - Uta no Prince-sama
+163. 日向絵琉 (Hinata Ema) - Brothers Conflict
+164. 雪村千鶴 (Yukimura Chizuru) - Hakuouki
+165. 星野市花 (Hoshino Ichika) - Collar×Malice
+166. カルディア (Cardia) - Code:Realize
+167. 筒隠月子 (Tsutsukakushi Tsukiko) - Hentai Ouji
+168. 新藤景 (Shindou Kei) - ef
+169. 羽山ミズキ (Hayama Mizuki) - ef
+170. イヴ (Eve) - eden*
+171. ルネ (Lune) - Irotoridori no Sekai
+172. 姫路 (Himeji) - Izumo
+173. くるみ (Kurumi) - Tayutama
+174. 双葉 (Futaba) - Soshite Ashita no Sekai yori
+175. 鹿倉憂 (Kakura Uyu) - Wagamama High Spec
+176. 关羽 (Kan'u) - Shin Koihime Musou
+177. 椎名京 (Shiina Miyako) - Majikoi
+178. 川神百代 (Kawakami Momoyo) - Majikoi
+179. 姫野瑞穂 (Himeno Mizuho) - deardrops
+180. 皇悠月 (Sumeragi Yuuki) - Noble☆Works
+181. 鈴木佳奈 (Suzuki Kana) - Suki na Ko ga Megane o Wasureta
+182. 紫藤かぐや (Shidou Kaguya) - Study § Steady
+183. レイラ (Leila) - loopers
+184. 小西美咲 (Katawa Shoujo Hanako) - Katawa Shoujo
+185. 女王 (Elodie) - Long Live the Queen
+186. 倉式茜 (Kurashiki Akane) - Zero Escape: 999
+187. アル (Alma) - VA-11 Hall-A
+188. 白羽凛 (Shiraha Rin) - Yume Miru Kusuri
+189. 御堂 (Midou) - G-senjou no Maou
+190. 宇佐美春 (Usami Haru) - G-senjou no Maou
+191. アリエッタ (Arietta) - Symphonic Rain
+192. 桂木桂 (Katsuragi Kei) - Sumaga
+193. ルリ (Ruri) - Axanael
+194. アル (Al Azif) - Kishin Hishou Demonbane
+195. 今坂唯笑 (Imasaka Yue) - Memories Off
+196. 桧月彩花 (Hizuki Ayana) - Memories Off 2nd
+197. オクタヴィア (Octavia) - Tears to Tiara
+198. エルルゥ (Eruru) - Utawarerumono
+199. クオン (Kuon) - Utawarerumono: Itsuwari no Kamen
+200. 詩月 (Shizuku) - Kanojo Step
+201. 芙蓉楓 (Fuyo Kaede) - Really? Really!
+202. 丘野真 (Okano Makoto) - Wind
+203. イグ (Ig) - Sekien no Inganock
+204. エリス (Eris) - Shiei no Sona-Nyl
+205. 篠原一枝 (Shinohara Kazue) - Cartagra
+206. 天城桃 (Amagi Momo) - Sorcery Jokers
+207. シィル (Shiiru) - Rance
+208. ヴィル (Wil) - Kamidori Alchemy Meister
+209. 村正 (Muramasa) - Fulklore Muramasa
+210. 天々音 (Amasugi Ne) - Hoshizora no Memoria
+211. 実原氷里 (Jitsuhara Hikari) - PhotoKano
+212. 翠 (Midori) - Amatsutsumi
+213. 響 (Hibiki) - Onigokko!
+214. 鈴音 (Suzune) - Charabration!
+215. 麗華 (Reika) - Bishoujo Mangekyou
+216. 紅 (Kurenai) - Monobeno
+217. 希里耶 (Celia) - Walkure Romanze
+218. 紬 (Tsumugi) - Sakuramoyou
+219. ルル (Lulu) - Deep One
+220. 久遠 (Kuon) - Kuon no Kizuna
+221. 千鹤 (Chizuru) - Akai Ito
+222. 白鳥 (Shiratori) - Aoi Shiro
+223. 白須百合 (Shirasu Yuri) - Flowers
+224. 乃々花 (Nonoka) - Flowers
+225. 友成 (Tomonari) - Kindred Spirits on the Roof
+226. 朝倉 (Asakura) - Nurse Love Syndrome
+227. 愛莉 (Airi) - OshiRabu
+228. 綾里真宵 (Fey Maya) - Gyakuten Saiban
+229. 椎名ましろ (Shiina Mashiro) - Sakurasou
+230. 白 (Shiro) - No Game No Life
+231. 加奈 (Kana) - Kana Imouto
+232. 遠藤 (Endou) - Crescendo
+233. 類 (Rui) - Rui wa Tomo wo Yobu
+234. アリシア (Alicia) - Twinkle☆Crusaders
+235. 緋月 (Hizuki) - Scarlet
+236. マリア (Maria) - Private Nurse
+237. 雪桜 (Yukizakura) - Yukizakura
+238. 悟 (Satoru) - Flyable Heart
+239. 怜奈 (Reina) - Rensa Byoutou
+240. 美咲 (Misaki) - Kanojo no Senjou
+241. 春日井春 (Kasugai Haru) - Osananajimi wa Daitouryou
+242. 鷹 (Taka) - Hanachirasu
+243. 璃紗 (Risa) - Sono Hanabira ni Kuchizuke wo
+244. 恋 (Ren) - Tenshi no Inai 12-gatsu
+245. 咲耶 (Sakuya) - Sister Princess
+246. 双葉 (Futaba F) - Futakoi
+247. 七海遥 (Nanami Haruka RI) - Ren'ai Infinity
+248. ミサオ (Misao) - Misao
+249. アヤ (Aya) - Mad Father
+250. イヴ (Ib) - Ib
+251. ヴィオラ (Viola) - Witch's House
+252. レイ (Rei YTTD) - Your Turn to Die
+253. 宮小路瑞穂 (Miyanokouji Mizuho) - Otome wa Boku ni Koishiteru
+254. 音羽 (Otowa) - H2O
+255. 月丘彰 (Tsukioka Akira) - Tsuki Tsuki!
+256. 朝比奈ふたば (Asahina Futaba) - Yoake Mae yori Ruriiro na
+257. 千堂瑛里華 (Sendou Erika) - Fortune Arterial
+258. 日野森あずさ (Hinomori Azusa) - Pia Carrot
+259. シルフィ (Sylphy) - Pastel Chime Continue
+260. 柊シノブ (Hiiragi Shinobu) - Subarashiki Hibi
+261. 時坂紫 (Tokusaka Yukari) - Kara no Shoujo
+262. 七海 (Nanami) - Love Sweet
+263. 桜衣雪 (Sakuragi Yuki) - Making*Lovers
+
+=== Danganronpa ===
+264. 霧切響子 (Kirigiri Kyouko) - Danganronpa
+265. 戦刃むすめ (Ikusaba Mukuro) - Danganronpa
+266. 江ノ島盾子 (Enoshima Junko) - Danganronpa
+267. 苗木誠 - Danganronpa
+
+=== DDLC ===
+268. モニカ (Monika) - Doki Doki Literature Club!
+269. 紗世里 (Sayori) - Doki Doki Literature Club!
+270. 優里 (Yuri) - Doki Doki Literature Club!
+271. 夏樹 (Natsuki) - Doki Doki Literature Club!
+272. 主人公 (MC) - Doki Doki Literature Club!
+
+=== Date A Live ===
+273. 時崎狂三 (Tokisaki Kurumi) - Date A Live
+274. 夜刀神十香 (Yatogami Tohka) - Date A Live
+275. 鳶一折紙 (Tobiichi Origami) - Date A Live
+276. 五河士道 - Date A Live
+
+=== 轻小说/动画改编 ===
+277. 高坂桐乃 (Kousaka Kirino) - Oreimo
+278. 霞ヶ丘詩羽 (Kasumigaoka Utaha) - Saekano
+279. 逢坂大河 (Aisaka Taiga) - Toradora!
+280. 戦場ヶ原ひたぎ (Senjougahara Hitagi) - Bakemonogatari
+281. 雪ノ下雪乃 (Yukinoshita Yukino) - Oregairu
+282. 由比ヶ浜結衣 (Yuigahama Yui) - Oregairu
+283. 稻葉姫子 (Inaba Himeko) - Kokoro Connect
+284. 小鳥遊六花 (Takanashi Rikka) - Chuunibyou
+285. 平沢唯 (Hirasawa Yui) - K-ON!
+286. 各務原なでしこ (Kagamihara Nadeshiko) - Yuru Camp△
+287. 宮内れんげ (Miyauchi Renge) - Non Non Biyori
+288. 雨宿まち (Amayadori Machi) - Kuma Miko
+289. ノエル (Noel) - Sora no Method
+290. 関谷なる (Sekiya Naru) - Hanayamata
+291. 桜ノ宮苺香 (Sakuranomiya Maika) - Blend S
+292. 猪名川由宇 (Inagawa Yuu) - Comic Party
+293. 中野三玖 (Nakano Miku) - Gotoubun no Hanayome
+294. 中野二乃 (Nakano Nino) - Gotoubun no Hanayome
+295. 高坂穂乃果 (Kousaka Honoka) - Love Live!
+296. 戸山香澄 (Toyama Kasumi) - BanG Dream!
+297. ルイズ (Louise) - Zero no Tsukaima
+298. シャナ (Shana) - Shakugan no Shana
+299. 涼宮ハルヒ (Suzumiya Haruhi) - Suzumiya Haruhi no Yuuutsu
+300. 桜島麻衣 (Sakurajima Mai) - Seishun Buta Yarou
+301. 四季 (Shiki) - World End Economica
+302. 天承 (Tenshou) - Hello Lady!
+303. ルナ (Luna) - Shingetsuan Tsukikage no Aria
+304. ルル (Lulu MC) - Magical Charming
+305. 阿虚 (Kyon) - Suzumiya Haruhi no Yuuutsu
+306. 梓川咲太 - Seishun Buta Yarou
+307. 水無月嘉祥 - Nekopara
+308. 高坂京介 - Oreimo
+309. 安芸伦也 - Saekano
+310. 高須龍児 - Toradora!
+311. 平贺才人 - Zero no Tsukaima
+312. 坂井悠二 - Shakugan no Shana
+
+=== Nekopara ===
+313. ショコラ (Chocola) - Nekopara
+314. バニラ (Vanilla) - Nekopara
+
+=== SHUFFLE! ===
+315. シア (Sia) - Shuffle!
+316. ネリネ (Nerine) - Shuffle!
+317. 芙蓉楓 - SHUFFLE!
+318. 時雨亜沙 - SHUFFLE!
+319. 麻莉=ブランシェール - SHUFFLE!
+320. リシアンサス - SHUFFLE!
+
+=== To Heart ===
+321. マルチ (Multi) - To Heart
+322. 向坂環 (Kousaka Tamaki) - To Heart 2
+323. 十波由真 - To Heart 2
+324. 朝倉音夢 (Asakura Nemu) - D.C. ~Da Capo~
+
+=== 方糖社 (Lump of Sugar) ===
+325. 泉戸ましろ - 游魂2
+326. 結城美柑 - 游魂2
+327. アメリア - 游魂2
+328. 桜井のどか - 恋花绽放樱飞时
+329. 一ノ瀬美桜 - 恋花绽放樱飞时
+330. 浅葉小鳥 - 恋花绽放樱飞时
+331. ルル - 魔卡魅恋
+
+=== 爱上火车 ===
+332. 八穂 (Hachiroku) - 爱上火车
+333. ポーレット - 爱上火车
+334. ひだまり - 爱上火车
+335. 右田双鉄 - 爱上火车
+
+=== 其他 ===
+336. 高峰小雪 - Happiness!2
+337. 白雪 - 初雪樱
+338. 海蔵新 - Re:LieF
+339. 大嶺粋成 - Re:LieF
+340. 羽瀬村兎香 - 月影魅像
+341. 愛麗娅 - 爱丽娅的明日盛典
+342. 夏帆 - 追忆夏色年华
+343. 星野てふ - TrymenT
+344. 恋粉姫 - 在世界与世界的正中央
+345. シルヴィア - 金辉恋曲四重奏
+346. レイラ - 金辉恋曲四重奏
+347. 環あかり - Golden Time
+348. 桜衣雪 - 突然＊恋人
+349. 鳴海律子 - 突然＊恋人
+350. 雪 - 雪境迷途遇仙踪
+351. 青姫 - 青夏轨迹
+352. 恋 - 想要传达给你的爱恋
+353. クロエ - 淑女同萌
+354. つばき - PARQUET
+355. 飛騨一姫 - 茂伸奇谈
+356. 雛 - 樱之杜†净梦者
+357. 御嶋リンネ - Island
+358. 三千界カナ - Island
+359. 切那 - Island
+360. 涼宮遥 (Suzumiya Haruka) - Kimi ga Nozomu Eien
+361. 速瀬水月 (Hayase Mizuki) - Kimi ga Nozomu Eien
+362. 時崎狂三 - Date A Live
+363. 鳶一折紙 - Date A Live
+
+=== 男主角们 ===
+364. 中津雄 - Katawa Shoujo
+365. 小波斗 - Hoshizora no Memoria
+366. 支倉孝平 - Fortune Arterial
+367. 朝倉純一 - D.C. ~Da Capo~
+368. 智也 - Memories Off
+369. 弘瀬琢磨 - H2O
+370. 須佐 - Irotoridori no Sekai
+371. 真田ユーリ - Tayutama
+372. 希崎拓央 - Walkure Romanze
+373. 哈拉鲁 - World End Economica
+374. 朝霧達哉 - Yoake Mae yori Ruriiro na
+375. アキラ - Pastel Chime Continue
+376. 直江大和 - Majikoi
+377. 暮林崎 - Tenshi no Inai 12-gatsu
+378. 海斗 - Sister Princess
+379. 望 - Futakoi
+380. 門倉甲 - Baldr Sky
+381. 有馬たかや - YU-NO
+382. 大十字九郎 - Kishin Hishou Demonbane
+383. 湊斗景明 - Fulklore Muramasa
+384. 東馬京介 - G-senjou no Maou
+
+========================================
+总计：384 个角色
+图片命名格式：角色名.png 或 角色名.jpg
+放到 galti/images/ 文件夹中
