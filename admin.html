@@ -188,7 +188,8 @@ function loadCloud(){
   fetch(BIN_URL,{
     headers:{'X-Master-Key':BIN_TOKEN}
   }).then(function(r){return r.json()}).then(function(resp){
-    var d=resp.record||[];
+    var raw=resp.record||[];
+    var d=Array.isArray(raw)?raw:(raw.data||[]);
     cloudData=d;
     document.getElementById('ce').style.display='none';
     render(d,'c');
