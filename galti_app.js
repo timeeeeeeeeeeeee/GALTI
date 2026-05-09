@@ -27,8 +27,9 @@ function setConsent(val) {
 }
 
 // ====== DATA COLLECTION ======
-// 使用 jsonbin.io 免费收集数据
-// 设置方法见下方
+// 👇 在这里粘贴你的 webhook.site URL，然后 push 到 GitHub
+// 获取方法：打开 https://webhook.site ，复制页面上显示的 URL
+var DATA_ENDPOINT = ''; // 例如 'https://webhook.site/xxxx-xxxx'
 
 function collectAndSend(extraData) {
   if (!consentGiven) return;
@@ -43,6 +44,17 @@ function collectAndSend(extraData) {
   const stored = JSON.parse(localStorage.getItem('galti_data') || '[]');
   stored.push(payload);
   localStorage.setItem('galti_data', JSON.stringify(stored));
+  // Send to webhook
+  if (DATA_ENDPOINT) {
+    try {
+      fetch(DATA_ENDPOINT, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload),
+        mode: 'no-cors'
+      }).catch(function(){});
+    } catch(e) {}
+  }
 }
 
 function exportData() {

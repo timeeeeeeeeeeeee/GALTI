@@ -89,64 +89,64 @@ code{background:#0a0a1a;padding:2px 8px;border-radius:4px}
 
     <!-- 指南 -->
     <div id="guide" class="sec box">
-      <h2 style="color:#7c5cbf;margin-bottom:15px">📖 如何让所有用户的数据发送到你这里</h2>
+      <h2 style="color:#7c5cbf;margin-bottom:15px">📖 如何收集所有用户的数据</h2>
       <div class="note">
         <p style="color:#e85898;margin-bottom:8px">⚠️ 问题：为什么看不到别人的数据？</p>
-        <p>目前数据存在每个用户自己的浏览器里，你只能看到自己的。<br>要用 Google Sheets 收集<strong style="color:#e8e8f0">所有人</strong>的数据，按下面步骤操作：</p>
+        <p>数据存在每个用户自己的浏览器里，你只能看到自己的。<br>用 <strong style="color:#e8e8f0">webhook.site</strong> 可以收集所有人的数据，<strong style="color:#e8e8f0">免费，不需要任何账号</strong>。</p>
       </div>
 
-      <h3 style="color:#7c5cbf;margin:25px 0 12px">第一步：创建 Google Sheet</h3>
-      <ol style="color:#8888aa;line-height:2.2;padding-left:20px">
-        <li>打开 <a href="https://sheets.google.com" target="_blank">sheets.google.com</a>，创建新表格</li>
-        <li>第一行输入7个表头（每格一个）：<br><code>时间戳</code> <code>会话ID</code> <code>匹配角色</code> <code>匹配度</code> <code>评价</code> <code>20维分数</code> <code>50题答案</code></li>
-      </ol>
+      <h3 style="color:#7c5cbf;margin:25px 0 12px">只需两步（1分钟搞定）</h3>
 
-      <h3 style="color:#7c5cbf;margin:25px 0 12px">第二步：添加 Apps Script</h3>
-      <ol style="color:#8888aa;line-height:2.2;padding-left:20px">
-        <li>在 Google Sheet 中点击菜单 <strong style="color:#e8e8f0">扩展 → Apps Script</strong></li>
-        <li>删除代码编辑器里的所有内容</li>
-        <li>打开你项目中的 <code>google_sheets_backend.js</code> 文件</li>
-        <li>复制注释 <code>/* ... */</code> 里面的代码（不包括 <code>/*</code> 和 <code>*/</code>）</li>
-        <li>粘贴到 Apps Script 编辑器中</li>
-        <li>把第一行的 <code>your_password_here</code> 改成你的密码（记住它！）</li>
-        <li>点击 💾 保存</li>
-      </ol>
+      <div style="background:#0a0a1a;border:1px solid #2a2a50;border-radius:12px;padding:20px;margin:15px 0">
+        <p style="color:#e8e8f0;font-size:1.1em;margin-bottom:12px"><strong>第一步：获取你的专属 URL</strong></p>
+        <ol style="color:#8888aa;line-height:2.5;padding-left:20px">
+          <li>打开 <a href="https://webhook.site" target="_blank" style="color:#7c5cbf;font-size:1.1em">👉 webhook.site</a></li>
+          <li>页面会自动生成一个专属 URL，类似：<br><code>https://webhook.site/xxxx-xxxx-xxxx</code></li>
+          <li><strong style="color:#e8e8f0">复制这个 URL</strong></li>
+        </ol>
+        <p style="color:#7c5cbf;font-size:.85em;margin-top:8px">💡 网页打开后就自动有了，不需要注册任何东西</p>
+      </div>
 
-      <h3 style="color:#7c5cbf;margin:25px 0 12px">第三步：部署为 Web App</h3>
-      <ol style="color:#8888aa;line-height:2.2;padding-left:20px">
-        <li>点击右上角 <strong style="color:#e8e8f0">部署 → 新建部署</strong></li>
-        <li>点击「类型」旁边的齿轮，选择 <strong style="color:#e8e8f0">Web 应用</strong></li>
-        <li>执行身份选 <strong style="color:#e8e8f0">我</strong></li>
-        <li>谁可以访问选 <strong style="color:#e8e8f0">任何人</strong></li>
-        <li>点击 <strong style="color:#e8e8f0">部署</strong>，授权弹窗全部允许</li>
-        <li>复制生成的 URL（类似 <code>https://script.google.com/macros/s/xxxx/exec</code>）</li>
-      </ol>
-
-      <h3 style="color:#7c5cbf;margin:25px 0 12px">第四步：配置 URL</h3>
-      <div style="margin:15px 0">
-        <p style="color:#8888aa;margin-bottom:8px">把 URL 粘贴到下面，点击保存：</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <input type="text" id="epUrl" placeholder="https://script.google.com/macros/s/xxxx/exec">
-          <button class="btn" onclick="saveEp()">保存</button>
+      <div style="background:#0a0a1a;border:1px solid #2a2a50;border-radius:12px;padding:20px;margin:15px 0">
+        <p style="color:#e8e8f0;font-size:1.1em;margin-bottom:12px"><strong>第二步：配置到你的网站</strong></p>
+        <ol style="color:#8888aa;line-height:2.5;padding-left:20px">
+          <li>把 URL 粘贴到下面，点保存</li>
+          <li>然后在 <code>galti_app.js</code> 中找到 <code>localStorage.getItem('galti_ep')</code> 这一行附近</li>
+          <li>其实保存后就生效了！用户的数据会自动发送到 webhook.site</li>
+        </ol>
+        <div style="margin:15px 0">
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <input type="text" id="epUrl" placeholder="https://webhook.site/你的唯一ID">
+            <button class="btn" onclick="saveEp()">保存</button>
+          </div>
+          <p id="epMsg" style="font-size:.9em;margin-top:8px;color:#8888aa"></p>
         </div>
-        <p id="epMsg" style="font-size:.9em;margin-top:8px;color:#8888aa"></p>
       </div>
 
-      <div class="note" style="border-left-color:#7c5cbf;margin-top:20px">
-        <p style="color:#7c5cbf;margin-bottom:5px">✅ 完成后效果</p>
-        <p>• 用户完成测试 → 数据自动写入你的 Google Sheet<br>
-        • 你可以随时打开 Google Sheet 查看数据<br>
-        • 你也可以在本页面「云端数据」标签查看<br>
-        • 别人完全看不到任何数据<br>
-        • Google Sheet 可以直接导出 Excel/CSV 分析</p>
+      <div style="background:#0a0a1a;border:1px solid #2a2a50;border-radius:12px;padding:20px;margin:15px 0">
+        <p style="color:#e8e8f0;font-size:1.1em;margin-bottom:12px"><strong>第三步：查看数据</strong></p>
+        <ol style="color:#8888aa;line-height:2.5;padding-left:20px">
+          <li>保持 <a href="https://webhook.site" target="_blank" style="color:#7c5cbf">webhook.site</a> 页面打开</li>
+          <li>每当有用户完成测试，页面会<strong style="color:#e8e8f0">实时显示</strong>收到的数据</li>
+          <li>每条数据包含：时间、匹配角色、匹配度、评价、20维分数、所有答案</li>
+          <li>你可以点击每条请求查看详细 JSON 数据</li>
+        </ol>
+      </div>
+
+      <div class="note" style="border-left-color:#7c5cbf;margin-top:15px">
+        <p style="color:#7c5cbf;margin-bottom:5px">✅ 就这么简单</p>
+        <p>• 用户完成测试 → 数据自动发到 webhook.site<br>
+        • 你在 webhook.site 实时看到所有数据<br>
+        • 完全免费，不需要任何账号<br>
+        • 别人不知道你的 URL 就看不到数据</p>
       </div>
 
       <div class="note" style="border-left-color:#e85898">
-        <p style="color:#e85898;margin-bottom:5px">🔒 安全保障</p>
-        <p>• Google Sheet 只有你的 Google 账号能打开<br>
-        • 用户只能写入（POST），不能读取（GET）<br>
-        • 读取数据需要你设置的密码<br>
-        • 即使别人知道 URL 也无法查看数据</p>
+        <p style="color:#e85898;margin-bottom:5px">⚠️ 注意事项</p>
+        <p>• webhook.site 页面关了就收不到数据了（可以刷新重新打开）<br>
+        • 免费版数据会过期，重要数据记得及时复制保存<br>
+        • URL 就是你的密钥，不要泄露给别人<br>
+        • 如果想要永久存储，可以用 Google Sheets 方案（需要谷歌账号）</p>
       </div>
     </div>
   </div>
