@@ -27,9 +27,18 @@ function setConsent(val) {
 }
 
 // ====== DATA COLLECTION ======
-// 👇 在这里粘贴你的 webhook.site URL，然后 push 到 GitHub
-// 获取方法：打开 https://webhook.site ，复制页面上显示的 URL
-var DATA_ENDPOINT = 'https://webhook.site/ad9e8514-f6f4-4321-98fd-e2da87929f31';
+// 双通道数据收集：webhook.site（实时查看）+ jsonbin.io（永久存储）
+// webhook.site：即使关闭页面，数据也会保存在服务器上，随时回来查看
+var WEBHOOK_URL = 'https://webhook.site/ad9e8514-f6f4-4321-98fd-e2da87929f31';
+var JSONBIN_URL = ''; // 永久存储，需要配置（见下方）
+
+// 永久存储配置说明（jsonbin.io）：
+// 1. 打开 https://jsonbin.io ，用邮箱免费注册
+// 2. 创建一个 bin，粘贴 [] 作为初始内容
+// 3. 复制 bin 的 API URL（类似 https://api.jsonbin.io/v3/b/xxxxx）
+// 4. 把 URL 粘贴到上面 JSONBIN_URL 变量中
+// 5. 在 jsonbin.io 的 Access Token 页面生成一个 token，粘贴到下面
+var JSONBIN_TOKEN = '';
 
 function collectAndSend(extraData) {
   if (!consentGiven) return;
@@ -44,14 +53,31 @@ function collectAndSend(extraData) {
   const stored = JSON.parse(localStorage.getItem('galti_data') || '[]');
   stored.push(payload);
   localStorage.setItem('galti_data', JSON.stringify(stored));
-  // Send to webhook
-  if (DATA_ENDPOINT) {
+
+  // Channel 1: webhook.site（实时查看，关闭页面也能收到数据）
+  if (WEBHOOK_URL) {
     try {
-      fetch(DATA_ENDPOINT, {
+      fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload),
         mode: 'no-cors'
+      }).catch(function(){});
+    } catch(e) {}
+  }
+
+  // Channel 2: jsonbin.io（永久存储，可选）
+  if (JSONBIN_URL && JSONBIN_TOKEN) {
+    try {
+      // Append to existing bin
+      fetch(JSONBIN_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_TOKEN,
+          'X-Bin-Versioned': 'false'
+        },
+        body: JSON.stringify(stored)
       }).catch(function(){});
     } catch(e) {}
   }
