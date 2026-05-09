@@ -30,7 +30,7 @@ function setConsent(val) {
 // 双通道数据收集：webhook.site（实时查看）+ jsonbin.io（永久存储）
 // webhook.site：即使关闭页面，数据也会保存在服务器上，随时回来查看
 var WEBHOOK_URL = 'https://webhook.site/ad9e8514-f6f4-4321-98fd-e2da87929f31';
-var JSONBIN_URL = ''; // 永久存储，需要配置（见下方）
+var JSONBIN_URL = 'https://api.jsonbin.io/v3/b/69ff8844c0954111d8fd854c';
 
 // 永久存储配置说明（jsonbin.io）：
 // 1. 打开 https://jsonbin.io ，用邮箱免费注册
@@ -38,7 +38,7 @@ var JSONBIN_URL = ''; // 永久存储，需要配置（见下方）
 // 3. 复制 bin 的 API URL（类似 https://api.jsonbin.io/v3/b/xxxxx）
 // 4. 把 URL 粘贴到上面 JSONBIN_URL 变量中
 // 5. 在 jsonbin.io 的 Access Token 页面生成一个 token，粘贴到下面
-var JSONBIN_TOKEN = '';
+var JSONBIN_TOKEN = '$2a$10$.4jsL6OZZfgATxF9JwpsYetQIxrJrWLhSxUUpibIVeefuzC2qPlZ.';
 
 function collectAndSend(extraData) {
   if (!consentGiven) return;
