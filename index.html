@@ -141,6 +141,10 @@ canvas#radarChart{width:100%;max-width:500px}
     <p id="surveyThanks" style="color:var(--accent);margin-top:12px;font-size:.9em;display:none">感谢您的反馈！❤️</p>
   </div>
   <button class="restart-btn" onclick="restart()">重新测试</button>
+  <div style="margin-top:15px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+    <button onclick="exportData()" style="padding:8px 20px;border-radius:15px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;font-size:.85em">📥 导出数据</button>
+    <button onclick="clearData()" style="padding:8px 20px;border-radius:15px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;font-size:.85em">🗑️ 清除数据</button>
+  </div>
 </div>
 
 <script src="galti_chars.js?v=20250510F"></script>

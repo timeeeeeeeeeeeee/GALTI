@@ -26,6 +26,15 @@ function setConsent(val) {
   btn.style.pointerEvents = 'auto';
 }
 
+// ====== DATA COLLECTION CONFIG ======
+// To enable Google Sheets collection:
+// 1. Create a Google Sheet
+// 2. Go to Extensions > Apps Script
+// 3. Paste the code from google_sheets_backend.js
+// 4. Deploy as Web App (Execute as: Me, Access: Anyone)
+// 5. Paste the URL below
+const DATA_ENDPOINT = ''; // e.g. 'https://script.google.com/macros/s/xxxx/exec'
+
 function collectAndSend(extraData) {
   if (!consentGiven) return;
   const payload = {
@@ -35,20 +44,37 @@ function collectAndSend(extraData) {
     scores: scores.slice(),
     ...extraData
   };
-  // Try to send to a free endpoint (jsonbin.io, Google Forms, etc.)
-  // For now, store locally and offer download
+  // Store locally
   const stored = JSON.parse(localStorage.getItem('galti_data') || '[]');
   stored.push(payload);
   localStorage.setItem('galti_data', JSON.stringify(stored));
-  // Also try sending to a webhook if available
-  try {
-    fetch('https://formspree.io/f/placeholder', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload),
-      mode: 'no-cors'
-    }).catch(() => {});
-  } catch(e) {}
+  // Send to remote endpoint if configured
+  if (DATA_ENDPOINT) {
+    try {
+      fetch(DATA_ENDPOINT, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    } catch(e) {}
+  }
+}
+
+function exportData() {
+  const stored = JSON.parse(localStorage.getItem('galti_data') || '[]');
+  if (stored.length === 0) { alert('暂无收集的数据'); return; }
+  const blob = new Blob([JSON.stringify(stored, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'galti_data_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function clearData() {
+  if (confirm('确定删除所有本地收集的数据？')) {
+    localStorage.removeItem('galti_data');
+    alert('已清除');
+  }
 }
 
 function submitSurvey(rating) {
