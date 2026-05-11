@@ -4,6 +4,7 @@ let scores = new Array(20).fill(0);
 let selectedOpt = -1;
 let answers = []; // Store answers for each question: {optIdx, scoreChanges}
 let consentGiven = false;
+let gameMode = 'deep'; // 'deep' or 'quick'
 let sessionId = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
 
 function showPage(id) {
@@ -13,8 +14,8 @@ function showPage(id) {
 
 function setConsent(val) {
   consentGiven = val;
-  const btn = document.getElementById('startBtn');
   const status = document.getElementById('consentStatus');
+  const modeSel = document.getElementById('modeSelect');
   if (val) {
     status.textContent = '✓ 已同意数据收集，感谢支持！';
     status.style.color = 'var(--accent)';
@@ -22,8 +23,7 @@ function setConsent(val) {
     status.textContent = '已拒绝数据收集，测试正常进行';
     status.style.color = 'var(--dim)';
   }
-  btn.style.opacity = '1';
-  btn.style.pointerEvents = 'auto';
+  modeSel.style.display = 'flex';
 }
 
 // ====== DATA COLLECTION ======
@@ -119,7 +119,8 @@ function submitSurvey(rating) {
   collectAndSend(surveyData);
 }
 
-function startQuiz() {
+function startQuiz(mode) {
+  gameMode = mode || 'deep';
   currentQ = 0;
   scores = new Array(20).fill(0);
   selectedOpt = -1;
@@ -128,16 +129,25 @@ function startQuiz() {
   renderQuestion();
 }
 
+function getQuestions() { return gameMode === 'quick' ? QUICK_QUESTIONS : QUESTIONS; }
+function getCharacters() { return gameMode === 'quick' ? QUICK_CHARS : CHARACTERS; }
+
 const VOLUME_NAMES = ['第一卷：叙事与审美','第二卷：道德与人性','第三卷：孤独与连接','第四卷：深渊与光明','第五卷：命运与选择'];
 
 function renderQuestion() {
-  const q = QUESTIONS[currentQ];
-  const volIdx = Math.floor(currentQ / 10);
-  document.getElementById('progressFill').style.width = ((currentQ) / QUESTIONS.length * 100) + '%';
-  document.getElementById('progressText').textContent = `${VOLUME_NAMES[volIdx]} · 问题 ${currentQ + 1}/${QUESTIONS.length}`;
+  const qs = getQuestions();
+  const q = qs[currentQ];
+  const total = qs.length;
+  document.getElementById('progressFill').style.width = ((currentQ) / total * 100) + '%';
+  if (gameMode === 'quick') {
+    document.getElementById('progressText').textContent = `⚡ 轻松测试 · 问题 ${currentQ + 1}/${total}`;
+  } else {
+    const volIdx = Math.floor(currentQ / 10);
+    document.getElementById('progressText').textContent = `${VOLUME_NAMES[volIdx]} · 问题 ${currentQ + 1}/${total}`;
+  }
   // Show category tag
   const catEl = document.getElementById('questionCat');
-  if (catEl) catEl.textContent = q.cat || '';
+  if (catEl) catEl.textContent = gameMode === 'quick' ? '⚡ 尖锐提问' : (q.cat || '');
   document.getElementById('questionText').textContent = q.q;
   const container = document.getElementById('optionsContainer');
   container.innerHTML = '';
@@ -163,6 +173,7 @@ function renderQuestion() {
 }
 
 function selectOption(idx) {
+  const qs = getQuestions();
   // If this question was previously answered, undo old scores first
   if (answers[currentQ]) {
     const oldChanges = answers[currentQ].scoreChanges;
@@ -172,7 +183,7 @@ function selectOption(idx) {
   }
 
   // Apply new scores
-  const opts = QUESTIONS[currentQ].opts[idx];
+  const opts = qs[currentQ].opts[idx];
   const scoreChanges = opts.s.map(([dim, val]) => [dim, val]);
   scoreChanges.forEach(([dim, val]) => {
     scores[dim] += val;
@@ -189,7 +200,7 @@ function selectOption(idx) {
   // Auto-advance after short delay
   setTimeout(() => {
     currentQ++;
-    if (currentQ >= QUESTIONS.length) {
+    if (currentQ >= qs.length) {
       showResults();
     } else {
       renderQuestion();
@@ -206,12 +217,13 @@ function prevQuestion() {
 function showResults() {
   showPage('loadingPage');
   setTimeout(() => {
+    const qs = getQuestions();
+    const chars = getCharacters();
+    const isQuick = gameMode === 'quick';
     // Adaptive normalization: find per-dimension theoretical range
-    // Each dimension appears in ~4-6 questions with scores 8-15
-    // Calculate actual min/max possible per dimension from questions
     const dimMin = new Array(20).fill(0);
     const dimMax = new Array(20).fill(0);
-    QUESTIONS.forEach(q => {
+    qs.forEach(q => {
       // Find the most extreme positive and negative contributions for each dimension
       const dimScores = {};
       q.opts.forEach(opt => {
@@ -239,11 +251,42 @@ function showResults() {
 
     // Deduplicate characters by name
     const seen = new Set();
-    const uniqueChars = CHARACTERS.filter(ch => {
+    const uniqueChars = chars.filter(ch => {
       const key = ch.name.replace(/\s*\(.*?\)\s*/g,'').trim();
       if(seen.has(key)) return false;
       seen.add(key); return true;
     });
+
+    // Quick mode: simpler matching (no variance filter, simpler distance)
+    if (isQuick) {
+      const userVec = normalized;
+      const withDist = uniqueChars.map(ch => {
+        let totalDist = 0;
+        for (let i = 0; i < 20; i++) {
+          totalDist += Math.pow(userVec[i] - ch.t[i], 2);
+        }
+        return { ...ch, rawDist: totalDist };
+      }).sort((a, b) => a.rawDist - b.rawDist);
+
+      const bestDist = withDist[0].rawDist;
+      const matches = withDist.map(ch => {
+        const relGap = (ch.rawDist - bestDist) / Math.max(bestDist, 1);
+        const similarity = Math.max(15, Math.min(95, Math.round(95 - relGap * 40)));
+        return { ...ch, similarity };
+      });
+
+      const POW_DISPLAY = 0.7;
+      const displayNorm = normalized.map(v => {
+        const dev = (v - 50) / 50;
+        const newDev = Math.sign(dev) * Math.pow(Math.abs(dev), POW_DISPLAY);
+        return Math.max(1, Math.min(99, Math.round(50 + newDev * 50)));
+      });
+
+      window._results = { normalized: displayNorm, matches };
+      renderResultsQuick(displayNorm, matches);
+      showPage('resultPage');
+      return;
+    }
 
     // STEP 1: Non-linear power curve to exaggerate character extremes
     // Maps: 30→18, 70→82, 80→92, 90→98, 20→8, 10→3
@@ -536,6 +579,80 @@ function showTab(tab) {
   if (tab === 'radar' && window._results) {
     drawRadar(window._results.normalized);
   }
+}
+
+function renderResultsQuick(norm, matches) {
+  const top2 = matches.slice(0, 2);
+  const best = top2[0];
+  const second = top2[1];
+
+  // Best match
+  document.getElementById('bestMatch').innerHTML = `
+    <p style="color:var(--accent2);font-size:.9em;margin-bottom:10px">⚡ 轻松测试结果</p>
+    <div class="char-avatar">${best.emoji}</div>
+    <div class="char-name">${best.name}</div>
+    <div class="char-game">来自：${best.game}</div>
+    <p style="font-size:2em;color:var(--accent);margin:10px 0">匹配度 ${best.similarity}%</p>
+    <p class="char-desc">${best.desc}</p>
+    <div style="background:var(--bg);border-radius:10px;padding:15px;margin:15px 0;border-left:3px solid var(--accent2)">
+      <p style="color:var(--accent2);font-size:.9em;margin-bottom:8px">🥈 第二匹配</p>
+      <p style="font-size:1.2em;font-weight:bold">${second.emoji} ${second.name}</p>
+      <p style="color:var(--dim);font-size:.9em">${second.game} · 匹配度 ${second.similarity}%</p>
+      <p style="color:var(--dim);font-size:.85em;margin-top:5px">${second.desc}</p>
+    </div>
+    <p style="color:var(--dim);margin-top:15px;font-size:.9em">想要更详细的结果？试试 <strong style="color:var(--accent)">深度测试</strong>！</p>
+  `;
+
+  // Set survey char name
+  const surveyCharEl = document.getElementById('surveyCharName');
+  if (surveyCharEl) surveyCharEl.textContent = best.name;
+
+  // Radar chart
+  drawRadar(norm);
+
+  // Dim list
+  const dimHtml = DIM_NAMES.map((name, i) => {
+    const v = norm[i];
+    const hue = (v / 100) * 270;
+    return `<div class="dim-item">
+      <span class="dim-name">${name}</span>
+      <div class="dim-bar-bg"><div class="dim-bar" style="width:${v}%;background:hsl(${hue},70%,60%)"></div></div>
+      <span class="dim-val">${v}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('dimList').innerHTML = dimHtml;
+
+  // Summary
+  const leftTraits = ['内向','理性','温柔','顺从','冷静','谨慎','乐观','依赖','含蓄','无私','天真','自律','严肃','传统','固执','敏感','浪漫','温和','忠诚','普通'];
+  const rightTraits = ['外向','感性','冷酷','叛逆','冲动','大胆','悲观','独立','热情','自私','狡猾','散漫','玩闹','开放','灵活','坚强','务实','强势','善变','中二'];
+  const topDims = norm.map((v, i) => ({i, v, diff: Math.abs(v - 50)})).sort((a, b) => b.diff - a.diff).slice(0, 5);
+  const summaryParts = topDims.map(d => {
+    const trait = d.v > 50 ? rightTraits[d.i] : leftTraits[d.i];
+    const pct = d.v > 50 ? d.v : 100 - d.v;
+    return `<strong>${DIM_NAMES[d.i]}</strong>维度上，你偏向<strong>${trait}</strong>（${pct}%）`;
+  });
+  const typeDesc = generateTypeDesc(norm, leftTraits, rightTraits);
+  document.getElementById('summaryCard').innerHTML = `
+    <h3>人格总结</h3>
+    <p class="summary-text">${typeDesc}</p>
+    <h3 style="margin-top:20px">核心特征</h3>
+    <div class="summary-text">${summaryParts.join('。<br>')}。</div>
+  `;
+
+  // Top chars (show all for quick mode)
+  const topHtml = matches.slice(0, 10).map(m => `
+    <div class="top-char-card">
+      <div class="mini-avatar">${m.emoji}</div>
+      <div class="match-pct">${m.similarity}%</div>
+      <div class="tc-name">${m.name}</div>
+      <div class="tc-game">${m.game}</div>
+    </div>
+  `).join('');
+  document.getElementById('topChars').innerHTML = topHtml;
+
+  setTimeout(() => {
+    document.querySelectorAll('.dim-bar').forEach(b => { b.style.transition = 'width 1s'; });
+  }, 100);
 }
 
 function restart() {

@@ -77,8 +77,23 @@ canvas#radarChart{width:100%;max-width:500px}
     </div>
     <p id="consentStatus" style="text-align:center;margin-top:10px;font-size:.8em;color:var(--dim)"></p>
   </div>
-  <button class="start-btn" id="startBtn" onclick="startQuiz()" style="opacity:0.4;pointer-events:none">开始测试</button>
-  <p style="color:var(--dim);font-size:.85em;margin-top:20px">数据来源：CNGal.org · VNDB.org · 预计用时 5-10 分钟</p>
+  <div id="modeSelect" style="display:none;gap:15px;margin:15px 0;flex-direction:column;align-items:center;width:100%;max-width:500px">
+    <div style="display:flex;gap:15px;width:100%">
+      <button onclick="startQuiz('deep')" style="flex:1;padding:20px;border-radius:16px;border:2px solid var(--accent);background:rgba(124,92,191,0.1);color:var(--text);cursor:pointer;transition:all .2s;text-align:center" onmouseover="this.style.background='rgba(124,92,191,0.3)'" onmouseout="this.style.background='rgba(124,92,191,0.1)'">
+        <div style="font-size:2em;margin-bottom:8px">🔬</div>
+        <div style="font-size:1.1em;font-weight:bold;color:var(--accent)">深度测试</div>
+        <div style="font-size:.8em;color:var(--dim);margin-top:5px">50题 · 20维分析 · 300角色</div>
+        <div style="font-size:.75em;color:var(--dim)">约 8-12 分钟</div>
+      </button>
+      <button onclick="startQuiz('quick')" style="flex:1;padding:20px;border-radius:16px;border:2px solid var(--accent2);background:rgba(232,88,152,0.1);color:var(--text);cursor:pointer;transition:all .2s;text-align:center" onmouseover="this.style.background='rgba(232,88,152,0.3)'" onmouseout="this.style.background='rgba(232,88,152,0.1)'">
+        <div style="font-size:2em;margin-bottom:8px">⚡</div>
+        <div style="font-size:1.1em;font-weight:bold;color:var(--accent2)">轻松测试</div>
+        <div style="font-size:.8em;color:var(--dim);margin-top:5px">20题 · 尖锐直白 · 40角色</div>
+        <div style="font-size:.75em;color:var(--dim)">约 2-3 分钟</div>
+      </button>
+    </div>
+  </div>
+  <p style="color:var(--dim);font-size:.85em;margin-top:20px">数据来源：CNGal.org · VNDB.org</p>
 </div>
 
 <div id="quizPage" class="page">
@@ -146,7 +161,8 @@ canvas#radarChart{width:100%;max-width:500px}
 <script src="galti_chars.js?v=20250510F"></script>
 <script src="galti_questions.js?v=20250510F"></script>
 <script src="galti_stories.js?v=20250510F"></script>
-<script src="galti_app.js?v=20250510F"></script>
+<script src="galti_quick.js?v=20250511Q"></script>
+<script src="galti_app.js?v=20250511Q"></script>
 </body>
 </html>
 </task_progress>
