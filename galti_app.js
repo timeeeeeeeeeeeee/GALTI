@@ -257,21 +257,40 @@ function showResults() {
       seen.add(key); return true;
     });
 
-    // Quick mode: simpler matching (no variance filter, simpler distance)
+    // Quick mode: weighted matching - character's defining traits get higher weight
     if (isQuick) {
       const userVec = normalized;
       const withDist = uniqueChars.map(ch => {
         let totalDist = 0;
+        let totalWeight = 0;
         for (let i = 0; i < 20; i++) {
-          totalDist += Math.pow(userVec[i] - ch.t[i], 2);
+          // Character's defining trait weight: extreme values = high weight, average = low
+          // |ch.t[i] - 50| ranges 0-50, normalized to 0-1
+          const extremeness = Math.abs(ch.t[i] - 50) / 50;
+          // Weight: 0.2 (irrelevant trait near 50) to 3.0 (core defining trait at 0 or 100)
+          // Using squared extremeness to make the contrast sharper
+          const weight = 0.2 + 2.8 * extremeness * extremeness;
+          const diff = userVec[i] - ch.t[i];
+          // Weighted squared distance
+          totalDist += weight * diff * diff;
+          totalWeight += weight;
         }
-        return { ...ch, rawDist: totalDist };
+        // Normalize by total weight so distance is comparable across characters
+        return { ...ch, rawDist: totalDist / totalWeight };
       }).sort((a, b) => a.rawDist - b.rawDist);
 
+      // Steep decay: best ~90%, quickly drops
       const bestDist = withDist[0].rawDist;
-      const matches = withDist.map(ch => {
-        const relGap = (ch.rawDist - bestDist) / Math.max(bestDist, 1);
-        const similarity = Math.max(15, Math.min(95, Math.round(95 - relGap * 40)));
+      const worstDist = withDist[withDist.length - 1].rawDist;
+      const range = worstDist - bestDist || 1;
+      const matches = withDist.map((ch, rank) => {
+        // Combination of rank-based and distance-based decay
+        const distRatio = (ch.rawDist - bestDist) / range;
+        // rank penalty: 0→0, 1→8, 2→16, ..., 39→78
+        const rankPenalty = rank * 2.0;
+        // distance penalty: 0→0, worst→30
+        const distPenalty = distRatio * 35;
+        const similarity = Math.max(3, Math.min(90, Math.round(90 - rankPenalty - distPenalty)));
         return { ...ch, similarity };
       });
 
