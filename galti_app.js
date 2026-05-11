@@ -245,57 +245,81 @@ function showResults() {
       seen.add(key); return true;
     });
 
-    // STEP 1: Filter out "bland" characters with insufficient personality
-    const MIN_VARIANCE = 3500;
-    const distinctiveChars = uniqueChars.filter(ch => {
+    // STEP 1: Non-linear power curve to exaggerate character extremes
+    // Maps: 30→18, 70→82, 80→92, 90→98, 20→8, 10→3
+    // Moderate traits stay moderate, extreme traits become MORE extreme
+    const POW = 0.55;
+    const transformedChars = uniqueChars.map(ch => ({
+      ...ch,
+      t: ch.t.map(v => {
+        const dev = (v - 50) / 50; // -1 to 1
+        const newDev = Math.sign(dev) * Math.pow(Math.abs(dev), POW);
+        return Math.max(1, Math.min(99, Math.round(50 + newDev * 50)));
+      })
+    }));
+
+    // STEP 2: Filter bland characters (after transformation, stricter threshold)
+    const MIN_VARIANCE = 1800;
+    const distinctiveChars = transformedChars.filter(ch => {
       const variance = ch.t.reduce((s, v) => s + (v - 50) * (v - 50), 0);
       return variance >= MIN_VARIANCE;
     });
 
-    // STEP 2: Exaggerate traits (2x deviation from 50)
-    const exChars = distinctiveChars.map(ch => ({
-      ...ch,
-      t: ch.t.map(v => Math.max(3, Math.min(97, Math.round(50 + (v - 50) * 2))))
-    }));
-
-    // STEP 3: Calculate raw distances (lower = better match)
+    // STEP 3: Calculate distance with aggressive differentiation
+    // Uses diff^3 and importance^2 to amplify small differences between similar characters
     const userVec = normalized;
 
-    const withDist = exChars.map(ch => {
+    const withDist = distinctiveChars.map(ch => {
       const chVec = ch.t;
       let totalDist = 0;
+      let topDimDist = 0; // Track worst dimension for tiebreaking
 
       for (let i = 0; i < 20; i++) {
-        const uExt = Math.abs(userVec[i] - 50);
-        const cExt = Math.abs(chVec[i] - 50);
-        const diff = userVec[i] - chVec[i];
+        const uVal = userVec[i];
+        const cVal = chVec[i];
+        const diff = uVal - cVal;
+        const uExt = Math.abs(uVal - 50);
+        const cExt = Math.abs(cVal - 50);
+        const maxExt = Math.max(uExt, cExt);
 
-        // Weight by how extreme either side is (important dimensions matter more)
-        const weight = 1 + Math.max(uExt, cExt) / 25;
-        totalDist += weight * diff * diff;
+        // Quadratic importance: defining traits matter MUCH more (1x → 9x range)
+        const importance = 1 + (maxExt * maxExt) / 500;
+        
+        // Cubic distance: amplifies small differences between similar characters
+        // diff^3 means a 10-point gap costs 1000, but a 20-point gap costs 8000
+        const dist = importance * Math.pow(Math.abs(diff), 3);
+        totalDist += dist;
+        if (dist > topDimDist) topDimDist = dist;
 
-        // Penalty for direction mismatch (user high + char low, or vice versa)
-        if ((userVec[i] > 55 && chVec[i] < 45) || (userVec[i] < 45 && chVec[i] > 55)) {
-          totalDist += 200; // Strong penalty for opposite personality
+        // Direction mismatch penalty: heavily penalize OPPOSITE personality
+        if ((uVal > 55 && cVal < 40) || (uVal < 45 && cVal > 60)) {
+          totalDist += 400 * (1 + maxExt / 25);
         }
       }
-      return { ...ch, rawDist: totalDist };
-    }).sort((a, b) => a.rawDist - b.rawDist);
+      return { ...ch, rawDist: totalDist, topDimDist };
+    }).sort((a, b) => a.rawDist - b.rawDist || a.topDimDist - b.topDimDist);
 
-    // STEP 4: Map raw distances to a nice percentage curve
-    // Best match → 96%, then exponential decay
+    // STEP 4: Steeper similarity decay curve
+    // Uses 4th root for initial gentleness, then rapid dropoff
     const bestDist = withDist[0].rawDist;
     const matches = withDist.map((ch, i) => {
-      const distFromBest = ch.rawDist - bestDist;
-      // Exponential decay: 0 → 96%, grows → lower %
-      // Using square root for gentler initial drop, then steeper
-      const decay = Math.sqrt(distFromBest / Math.max(bestDist, 1));
-      const similarity = Math.max(18, Math.min(97, Math.round(97 - decay * 55)));
+      const relGap = (ch.rawDist - bestDist) / Math.max(bestDist, 1);
+      // Power 0.35: very steep decay after top match
+      const decay = Math.pow(relGap, 0.35);
+      const similarity = Math.max(12, Math.min(97, Math.round(97 - decay * 60)));
       return { ...ch, similarity };
     });
 
-    window._results = { normalized, matches };
-    renderResults(normalized, matches);
+    // Also transform user scores for display (matching the character exaggeration)
+    const POW_DISPLAY = 0.7;
+    const displayNorm = normalized.map(v => {
+      const dev = (v - 50) / 50;
+      const newDev = Math.sign(dev) * Math.pow(Math.abs(dev), POW_DISPLAY);
+      return Math.max(1, Math.min(99, Math.round(50 + newDev * 50)));
+    });
+
+    window._results = { normalized: displayNorm, matches };
+    renderResults(displayNorm, matches);
     showPage('resultPage');
   }, 1500);
 }
