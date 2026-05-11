@@ -327,14 +327,15 @@ function showResults() {
       return variance >= MIN_VARIANCE;
     });
 
-    // STEP 3: Calculate distance with aggressive differentiation
-    // Uses diff^3 and importance^2 to amplify small differences between similar characters
+    // STEP 3: Weighted matching - character's defining traits get higher weight
+    // Combined with cubic distance amplification and direction mismatch penalty
     const userVec = normalized;
 
     const withDist = distinctiveChars.map(ch => {
       const chVec = ch.t;
       let totalDist = 0;
-      let topDimDist = 0; // Track worst dimension for tiebreaking
+      let totalWeight = 0;
+      let topDimDist = 0;
 
       for (let i = 0; i < 20; i++) {
         const uVal = userVec[i];
@@ -344,31 +345,45 @@ function showResults() {
         const cExt = Math.abs(cVal - 50);
         const maxExt = Math.max(uExt, cExt);
 
-        // Quadratic importance: defining traits matter MUCH more (1x → 9x range)
-        const importance = 1 + (maxExt * maxExt) / 500;
-        
+        // Character-defining trait weight: extreme character values = high weight
+        // Squared extremeness makes core traits dominate matching
+        const charExtremeness = cExt / 50;
+        const charWeight = 0.2 + 2.8 * charExtremeness * charExtremeness;
+
+        // Combined importance: both user and character extremes matter
+        const crossImportance = 1 + (maxExt * maxExt) / 500;
+
+        // Final weight = character defining weight × cross importance
+        const weight = charWeight * crossImportance;
+
         // Cubic distance: amplifies small differences between similar characters
-        // diff^3 means a 10-point gap costs 1000, but a 20-point gap costs 8000
-        const dist = importance * Math.pow(Math.abs(diff), 3);
+        const dist = weight * Math.pow(Math.abs(diff), 3);
         totalDist += dist;
+        totalWeight += weight;
         if (dist > topDimDist) topDimDist = dist;
 
-        // Direction mismatch penalty: heavily penalize OPPOSITE personality
+        // Direction mismatch penalty: heavily penalize OPPOSITE personality on defining traits
         if ((uVal > 55 && cVal < 40) || (uVal < 45 && cVal > 60)) {
-          totalDist += 400 * (1 + maxExt / 25);
+          totalDist += 400 * charWeight * (1 + maxExt / 25);
         }
       }
-      return { ...ch, rawDist: totalDist, topDimDist };
+      // Normalize by total weight for comparability
+      return { ...ch, rawDist: totalDist / totalWeight, topDimDist };
     }).sort((a, b) => a.rawDist - b.rawDist || a.topDimDist - b.topDimDist);
 
-    // STEP 4: Steeper similarity decay curve
-    // Uses 4th root for initial gentleness, then rapid dropoff
+    // STEP 4: Similarity decay with rank + distance combined
     const bestDist = withDist[0].rawDist;
-    const matches = withDist.map((ch, i) => {
+    const worstDist = withDist[withDist.length - 1].rawDist;
+    const distRange = worstDist - bestDist || 1;
+    const matches = withDist.map((ch, rank) => {
+      const distRatio = (ch.rawDist - bestDist) / distRange;
+      // Power decay for initial matches
       const relGap = (ch.rawDist - bestDist) / Math.max(bestDist, 1);
-      // Power 0.35: very steep decay after top match
       const decay = Math.pow(relGap, 0.35);
-      const similarity = Math.max(12, Math.min(97, Math.round(97 - decay * 60)));
+      const baseSim = 97 - decay * 60;
+      // Rank penalty for differentiation
+      const rankPenalty = Math.min(30, rank * 0.8);
+      const similarity = Math.max(8, Math.min(97, Math.round(baseSim - rankPenalty)));
       return { ...ch, similarity };
     });
 
